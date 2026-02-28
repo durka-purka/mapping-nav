@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  BEHAVIOR TREE: Landmark Navigation with Continuous Replanning & Recovery
+  
+  Purpose:
+  - Navigate to landmark waypoints with continuous global path replanning
+  - Execute local path following with obstacle avoidance
+  - Implement multi-step recovery when navigation fails
+  - Adapt to unknown obstacles discovered during exploration
+  
+  Key Features:
+  - Replan global path at 1 Hz (adapts to newly discovered obstacles)
+  - Recovery sequence: clear costmaps → spin → backup → wait
+  - Up to 6 recovery attempts per waypoint
+  - Suitable for Activity 2 (landmark navigation) and Activity 3 (exploration)
+  
+  Behavior Tree Nodes:
+  - RecoveryNode: Retry main behavior up to N times, execute recovery on failure
+  - PipelineSequence: Execute children in sequence, stop at first failure
+  - RateController: Execute child at specific frequency
+  - ComputePathToPose: Call global planner
+  - FollowPath: Call local controller
+  - ClearEntireCostmap: Clear costmap via service
+  - Spin: Recovery action - spin in place
+  - Wait: Recovery action - pause and retry
+-->
+
+<root main_tree_to_execute="MainTree">
+  <BehaviorTree ID="MainTree">
+    
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- MAIN NAVIGATION WITH RECOVERY (up to 6 recovery attempts)       -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <RecoveryNode number_of_retries="6" name="NavigateRecovery">
+      
+      <!-- ─────────────────────────────────────────────────────────── -->
+      <!-- PRIMARY NAVIGATION: Plan + Follow                            -->
+      <!-- ─────────────────────────────────────────────────────────── -->
+      <PipelineSequence name="NavigateWithReplanning">
+        
+        <!-- GLOBAL PATH PLANNING -->
+        <!-- Replan at 1 Hz to adapt to newly discovered obstacles     -->
+        <RateController hz="1.0" name="ReplanningRate">
+          <RecoveryNode number_of_retries="1" name="ComputePathToPose">
+            
+            <!-- Compute global path from current pose to goal          -->
+            <ComputePathToPose 
+              goal="{goal}" 
+              path="{path}" 
+              planner_id="GridBased"/>
+            
+            <!-- RECOVERY: If planning fails, clear costmap            -->
+            <ClearEntireCostmap 
+              service_name="global_costmap/clear_entirely_global_costmap"/>
+            
+          </RecoveryNode>
+        </RateController>
+        
+        <!-- LOCAL PATH FOLLOWING -->
+        <!-- Execute planned path with obstacle avoidance              -->
+        <RecoveryNode number_of_retries="1" name="FollowPath">
+          
+          <!-- Follow the global path using local planner (DWB)        -->
+          <FollowPath 
+            path="{path}" 
+            controller_id="FollowPath"/>
+          
+          <!-- RECOVERY: If path following fails, clear local costmap  -->
+          <ClearEntireCostmap 
+            service_name="local_costmap/clear_entirely_local_costmap"/>
+          
+        </RecoveryNode>
+        
+      </PipelineSequence>
+      
+      <!-- ─────────────────────────────────────────────────────────── -->
+      <!-- RECOVERY ACTIONS (when navigation fails)                    -->
+      <!-- ─────────────────────────────────────────────────────────── -->
+      <!-- Executed in sequence when primary navigation fails          -->
+      <SequenceStar name="RecoveryActions">
+        
+        <!-- Step 1: Clear local costmap (remove temporary obstacles)  -->
+        <ClearEntireCostmap 
+          service_name="local_costmap/clear_entirely_local_costmap"/>
+        
+        <!-- Step 2: Clear global costmap (remove stale obstacles)     -->
+        <ClearEntireCostmap 
+          service_name="global_costmap/clear_entirely_global_costmap"/>
+        
+        <!-- Step 3: Spin in place (reacquire visual features, scan)   -->
+        <!-- spin_dist: 0.3 radians ≈ 17 degrees per spin              -->
+        <Spin spin_dist="0.3" name="RecoverySpinAction"/>
+        
+        <!-- Step 4: Wait before retry (allow sensors to settle)       -->
+        <Wait wait_duration="2" name="RecoveryWait"/>
+        
+      </SequenceStar>
+      
+    </RecoveryNode>
+    
+  </BehaviorTree>
+</root>

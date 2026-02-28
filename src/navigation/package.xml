@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>navigation</name>
+  <version>0.2.0</version>
+  <description>
+    Autonomous Navigation Stack for Australian Rover Challenge 2026
+    
+    Includes:
+    - Nav2 SLAM/Navigation integration
+    - Landmark-based waypoint navigation
+    - Frontier-based exploration
+    - Autonomous collision recovery
+    - Placard detection and imaging
+    - Cube localization and reporting
+  </description>
+  
+  <maintainer email="your.email@example.com">Your Team</maintainer>
+  <license>Apache-2.0</license>
+  
+  <url type="website">https://github.com/durka-purka/mapping-nav</url>
+  <url type="repository">https://github.com/durka-purka/mapping-nav</url>
+  <url type="bugtracker">https://github.com/durka-purka/mapping-nav/issues</url>
+  
+  <author email="your.email@example.com">Your Team</author>
+  
+  <!-- Build and runtime dependencies -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
+  
+  <!-- Core ROS2 dependencies -->
+  <depend>rclpy</depend>
+  <depend>rclcpp</depend>
+  <depend>nav2_bringup</depend>
+  <depend>nav2_core</depend>
+  <depend>nav2_msgs</depend>
+  <depend>nav_msgs</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+  <depend>std_srvs</depend>
+  <depend>tf2_ros</depend>
+  <depend>tf2_geometry_msgs</depend>
+  
+  <!-- Perception and SLAM dependencies -->
+  <depend>nav2_amcl</depend>
+  <depend>nav2_map_server</depend>
+  <depend>nav2_planner</depend>
+  <depend>nav2_controller</depend>
+  <depend>nav2_behaviors</depend>
+  <depend>nav2_costmap_2d</depend>
+  <depend>nav2_util</depend>
+  <depend>nav2_navfn_planner</depend>
+  <depend>nav2_regulated_pure_pursuit_controller</depend>
+  <depend>nav2_bt_navigator</depend>
+  <depend>behaviortree_cpp_v3</depend>
+  
+  <!-- Python dependencies -->
+  <depend>numpy</depend>
+  <depend>scipy</depend>
+  <depend>pyyaml</depend>
+  <depend>opencv-python</depend>
+  <depend>tf_transformations</depend>
+  
+  <!-- Testing dependencies -->
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>pytest</test_depend>
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

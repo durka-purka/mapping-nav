@@ -1,0 +1,154 @@
+# Detailed costmap layer configuration for RealSense D435 + LiDAR
+# Tuned for Australian Rover Challenge 2026
+
+global_costmap:
+  global_costmap:
+    ros__parameters:
+      # Update rates
+      update_frequency: 1.0          # Hz - update published map
+      publish_frequency: 1.0         # Hz - publish costmap
+      
+      # Frames
+      global_frame: map
+      robot_base_frame: base_link
+      use_sim_time: false
+      
+      # Grid parameters
+      resolution: 0.05               # meters per cell
+      width: 100                     # cells
+      height: 100                    # cells
+      origin_x: -2.5                 # meters
+      origin_y: -2.5
+      unknown_cost_value: 255
+      lethal_cost_threshold: 100
+      
+      # Plugins (order matters - processed in this order)
+      plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
+      
+      # ─────────────────────────────────────────────────────────────
+      # STATIC LAYER (from map server/RTAB-Map)
+      # ─────────────────────────────────────────────────────────────
+      static_layer:
+        plugin: "nav2_costmap_2d::StaticLayer"
+        enabled: true
+        map_subscribe_transient_local: true
+        map_topic: "/map"
+      
+      # ─────────────────────────────────────────────────────────────
+      # OBSTACLE LAYER (from sensors - LiDAR + depth camera)
+      # ─────────────────────────────────────────────────────────────
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        footprint_clearing_enabled: true
+        max_obstacle_height: 2.0
+        combination_method: 1         # 0=overwrite, 1=max
+        
+        # Observation sources
+        observation_sources: scan depth_camera
+        
+        scan:
+          topic: "/scan"
+          sensor_frame: laser_frame
+          data_type: "LaserScan"
+          expected_update_rate: 10.0
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          obstacle_max_range: 5.0
+          obstacle_min_range: 0.0
+          rayclearing: true
+          marking: true
+          inf_is_valid: false
+        
+        depth_camera:
+          topic: "/camera/depth/image_rect_raw"
+          sensor_frame: camera_depth_optical_frame
+          data_type: "DepthImage"
+          expected_update_rate: 15.0
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          obstacle_max_range: 2.5
+          obstacle_min_range: 0.0
+          rayclearing: true
+          marking: true
+          inf_is_valid: false
+      
+      # ─────────────────────────────────────────────────────────────
+      # INFLATION LAYER (expansion around obstacles)
+      # ─────────────────────────────────────────────────────────────
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        enabled: true
+        inflation_radius: 0.55        # meters - robot margin
+        cost_scaling_factor: 10.0     # exponential decay
+        inflate_unknown: false
+        inflate_around_unknown: true
+
+# ─────────────────────────────────────────────────────────────────────────────
+# LOCAL COSTMAP (rolling window, used by controller)
+# ─────────────────────────────────────────────────────────────────────────────
+local_costmap:
+  local_costmap:
+    ros__parameters:
+      # Update rates
+      update_frequency: 5.0
+      publish_frequency: 2.0
+      
+      # Frames
+      global_frame: odom
+      robot_base_frame: base_link
+      use_sim_time: false
+      
+      # Rolling window
+      rolling_window: true
+      width: 3.0                     # 3 x 3 meter window
+      height: 3.0
+      resolution: 0.05
+      
+      plugins: ["obstacle_layer", "inflation_layer"]
+      
+      # ─────────────────────────────────────────────────────────────
+      # OBSTACLE LAYER (local sensing)
+      # ─────────────────────────────────────────────────────────────
+      obstacle_layer:
+        plugin: "nav2_costmap_2d::ObstacleLayer"
+        enabled: true
+        footprint_clearing_enabled: true
+        max_obstacle_height: 2.0
+        combination_method: 1
+        
+        observation_sources: scan depth_camera
+        
+        scan:
+          topic: "/scan"
+          sensor_frame: laser_frame
+          data_type: "LaserScan"
+          expected_update_rate: 10.0
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          obstacle_max_range: 3.0
+          obstacle_min_range: 0.0
+          rayclearing: true
+          marking: true
+        
+        depth_camera:
+          topic: "/camera/depth/image_rect_raw"
+          sensor_frame: camera_depth_optical_frame
+          data_type: "DepthImage"
+          expected_update_rate: 15.0
+          min_obstacle_height: 0.0
+          max_obstacle_height: 2.0
+          obstacle_max_range: 2.0
+          obstacle_min_range: 0.0
+          rayclearing: true
+          marking: true
+      
+      # ─────────────────────────────────────────────────────────────
+      # INFLATION LAYER
+      # ─────────────────────────────────────────────────────────────
+      inflation_layer:
+        plugin: "nav2_costmap_2d::InflationLayer"
+        enabled: true
+        inflation_radius: 0.45
+        cost_scaling_factor: 10.0
+        inflate_unknown: false
