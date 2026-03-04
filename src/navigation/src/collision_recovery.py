@@ -20,7 +20,6 @@ from geometry_msgs.msg import Twist, PoseStamped
 from nav_msgs.msg import Odometry
 from nav2_msgs.action import NavigateToPose, BackUp, Spin
 from std_msgs.msg import String, Float32
-from sensor_msgs.msg import LaserScan
 
 import numpy as np
 from enum import Enum
@@ -56,16 +55,15 @@ class CollisionRecoveryHandler(Node):
     """
     Detects stuck conditions and implements recovery behaviors
     
-    Stuck detection criteria:
+    Stuck detection criteria (RealSense/IMU only, no LIDAR):
     1. Goal not progressing (odometry stuck for 10+ seconds)
-    2. Costmap occupied at robot location
-    3. Lidar/depth sensor detects obstacles
-    4. Navigation node reports repeated failures
+    2. Costmap occupied at robot location (handled by Nav2)
+    3. Navigation node reports repeated failures
     
     Recovery sequence:
-    1. Clear local costmap (removes noise)
+    1. Clear local costmap (removes depth sensor noise)
     2. Back up 30 cm
-    3. Spin 360�� to reacquire features
+    3. Spin 360° to recapture visual features
     4. Retry path planning
     5. If still stuck, skip waypoint
     """
@@ -77,15 +75,11 @@ class CollisionRecoveryHandler(Node):
         self.declare_parameter('stuck_timeout', 10.0)  # seconds
         self.declare_parameter('min_forward_progress', 0.1)  # meters
         self.declare_parameter('max_recovery_attempts', 4)
-        self.declare_parameter('enable_lidar_checking', False)  # If LIDAR available
-        self.declare_parameter('obstacle_threshold_distance', 0.3)  # meters
         self.declare_parameter('autonomous_mode', True)
         
         self.stuck_timeout = self.get_parameter('stuck_timeout').value
         self.min_progress = self.get_parameter('min_forward_progress').value
         self.max_recovery = self.get_parameter('max_recovery_attempts').value
-        self.enable_lidar = self.get_parameter('enable_lidar_checking').value
-        self.obstacle_threshold = self.get_parameter('obstacle_threshold_distance').value
         self.autonomous_mode = self.get_parameter('autonomous_mode').value
         
         # State tracking
@@ -99,7 +93,6 @@ class CollisionRecoveryHandler(Node):
         # Current odometry
         self.current_pose = None
         self.current_odom = None
-        self.obstacle_distance = float('inf')
         
         # Action clients
         self.backup_client = ActionClient(self, BackUp, 'backup')
@@ -118,14 +111,6 @@ class CollisionRecoveryHandler(Node):
             self.odom_callback,
             reliable_qos
         )
-        
-        if self.enable_lidar:
-            self.lidar_sub = self.create_subscription(
-                LaserScan,
-                'scan',  # LaserScan topic if LIDAR available
-                self.lidar_callback,
-                reliable_qos
-            )
         
         # Publishers
         self.recovery_status_pub = self.create_publisher(
@@ -162,18 +147,6 @@ class CollisionRecoveryHandler(Node):
             self.last_progress_pose = self.current_pose
             self.last_progress_time = self.get_clock().now()
 
-    def lidar_callback(self, msg: LaserScan):
-        """Update obstacle distance from LIDAR"""
-        if len(msg.ranges) == 0:
-            return
-        
-        # Filter out invalid readings
-        valid_ranges = [r for r in msg.ranges if msg.range_min <= r <= msg.range_max]
-        
-        if valid_ranges:
-            # Minimum distance to any obstacle
-            self.obstacle_distance = min(valid_ranges)
-
     def stuck_detection_loop(self):
         """Main loop for stuck detection"""
         if self.state == RecoveryState.NORMAL:
@@ -190,8 +163,8 @@ class CollisionRecoveryHandler(Node):
         
         Criteria:
         1. No forward progress for stuck_timeout seconds
-        2. LIDAR detects obstacles closer than threshold
-        3. Multiple consecutive nav failures
+        2. Odometry indicates no significant movement
+        3. Costmap indicates robot position is occupied (via Nav2 stuck condition)
         """
         if not self.current_pose or not self.last_progress_pose:
             return False
@@ -210,13 +183,6 @@ class CollisionRecoveryHandler(Node):
         if distance_traveled < self.min_progress:
             self.get_logger().warning(
                 f'Stuck detected: only {distance_traveled:.3f}m traveled in {elapsed:.1f}s'
-            )
-            return True
-        
-        # Check LIDAR (if available)
-        if self.enable_lidar and self.obstacle_distance < self.obstacle_threshold:
-            self.get_logger().warning(
-                f'Obstacle at {self.obstacle_distance:.2f}m - stuck'
             )
             return True
         

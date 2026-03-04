@@ -211,8 +211,6 @@ def generate_launch_description():
             'stuck_timeout': 10.0,
             'min_forward_progress': 0.1,
             'max_recovery_attempts': 4,
-            'enable_lidar_checking': False,
-            'obstacle_threshold_distance': 0.3,
             'autonomous_mode': LaunchConfiguration('autonomous_phase'),
         }]
     )

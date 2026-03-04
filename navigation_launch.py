@@ -229,8 +229,8 @@ def generate_launch_description():
                         'max_obstacle_height': 2.0,
                         'min_obstacle_height': 0.1,
                         'mark_threshold': 0,
-                        'observation_sources': 'scan',
-                        'scan': {
+                        'observation_sources': 'realsense_depth',
+                        'realsense_depth': {
                             'topic': '/camera/camera/depth/color/points',
                             'sensor_frame': 'camera_depth_optical_frame',
                             'data_type': 'PointCloud2',
@@ -282,8 +282,8 @@ def generate_launch_description():
                     'obstacle_layer': {
                         'plugin': 'nav2_costmap_2d::ObstacleLayer',
                         'enabled': True,
-                        'observation_sources': 'scan',
-                        'scan': {
+                        'observation_sources': 'realsense_depth',
+                        'realsense_depth': {
                             'topic': '/camera/camera/depth/color/points',
                             'sensor_frame': 'camera_depth_optical_frame',
                             'data_type': 'PointCloud2',

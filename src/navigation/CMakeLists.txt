@@ -28,13 +28,13 @@ find_package(std_srvs REQUIRED)
 ament_python_install_package(navigation)
 
 # Install Python executables
-install(PROGRAMS
-  navigation/navigation_manager.py
-  navigation/waypoint_handler.py
-  navigation/frontier_exploration.py
-  navigation/collision_recovery.py
-  DESTINATION lib/${PROJECT_NAME}
-)
+# install(PROGRAMS
+#   navigation/navigation_manager.py
+#   navigation/waypoint_handler.py
+#   navigation/frontier_exploration.py
+#   navigation/collision_recovery.py
+#   DESTINATION lib/${PROJECT_NAME}
+# )
 
 # Install launch files
 install(DIRECTORY launch/
@@ -59,6 +59,10 @@ install(DIRECTORY maps/
 # Install RViz configs
 install(DIRECTORY rviz/
   DESTINATION share/${PROJECT_NAME}/rviz
+)
+
+install(DIRECTORY object_detection/
+  DESTINATION share/${PROJECT_NAME}/object_detection
 )
 
 # Testing

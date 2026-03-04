@@ -15,14 +15,14 @@
     - Cube localization and reporting
   </description>
   
-  <maintainer email="your.email@example.com">Your Team</maintainer>
+  <maintainer email="marlambekovdaulet@gmail.com">Your Team</maintainer>
   <license>Apache-2.0</license>
   
   <url type="website">https://github.com/durka-purka/mapping-nav</url>
   <url type="repository">https://github.com/durka-purka/mapping-nav</url>
   <url type="bugtracker">https://github.com/durka-purka/mapping-nav/issues</url>
   
-  <author email="your.email@example.com">Your Team</author>
+  <author email="marlambekovdaulet@gmail.com">Your Team</author>
   
   <!-- Build and runtime dependencies -->
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -43,7 +43,6 @@
   <depend>tf2_geometry_msgs</depend>
   
   <!-- Perception and SLAM dependencies -->
-  <depend>nav2_amcl</depend>
   <depend>nav2_map_server</depend>
   <depend>nav2_planner</depend>
   <depend>nav2_controller</depend>

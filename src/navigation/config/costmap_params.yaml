@@ -1,4 +1,5 @@
-# Detailed costmap layer configuration for RealSense D435 + LiDAR
+# Costmap layer configuration for RealSense D435 RGB-D camera (NO LIDAR)
+# Obstacle detection purely from depth camera
 # Tuned for Australian Rover Challenge 2026
 
 global_costmap:
@@ -23,6 +24,7 @@ global_costmap:
       lethal_cost_threshold: 100
       
       # Plugins (order matters - processed in this order)
+      # Note: Using only static map layer + depth camera obstacle layer (NO LIDAR)
       plugins: ["static_layer", "obstacle_layer", "inflation_layer"]
       
       # ─────────────────────────────────────────────────────────────
@@ -44,21 +46,8 @@ global_costmap:
         max_obstacle_height: 2.0
         combination_method: 1         # 0=overwrite, 1=max
         
-        # Observation sources
-        observation_sources: scan depth_camera
-        
-        scan:
-          topic: "/scan"
-          sensor_frame: laser_frame
-          data_type: "LaserScan"
-          expected_update_rate: 10.0
-          min_obstacle_height: 0.0
-          max_obstacle_height: 2.0
-          obstacle_max_range: 5.0
-          obstacle_min_range: 0.0
-          rayclearing: true
-          marking: true
-          inf_is_valid: false
+        # Observation sources: DEPTH CAMERA ONLY (NO LIDAR)
+        observation_sources: depth_camera
         
         depth_camera:
           topic: "/camera/depth/image_rect_raw"
@@ -117,19 +106,8 @@ local_costmap:
         max_obstacle_height: 2.0
         combination_method: 1
         
-        observation_sources: scan depth_camera
-        
-        scan:
-          topic: "/scan"
-          sensor_frame: laser_frame
-          data_type: "LaserScan"
-          expected_update_rate: 10.0
-          min_obstacle_height: 0.0
-          max_obstacle_height: 2.0
-          obstacle_max_range: 3.0
-          obstacle_min_range: 0.0
-          rayclearing: true
-          marking: true
+        # Observation sources: DEPTH CAMERA ONLY (NO LIDAR)
+        observation_sources: depth_camera
         
         depth_camera:
           topic: "/camera/depth/image_rect_raw"
