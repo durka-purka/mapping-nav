@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- This URDF was automatically created by SolidWorks to URDF Exporter! Originally created by Stephen Brawner (brawner@gmail.com) 
+     Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
+     For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
+<robot
+  name="Rover Assembly URDF">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.0995493291128925 -0.000379326476322777 -0.127506931768041"
+        rpy="0 0 0" />
+      <mass
+        value="3.82645965067703" />
+      <inertia
+        ixx="0.0182359318821782"
+        ixy="-1.66336102014158E-07"
+        ixz="-9.47682530438081E-05"
+        iyy="0.0300845157364661"
+        iyz="6.11441670624201E-08"
+        izz="0.0371542337688629" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="front_left_wheel">
+    <inertial>
+      <origin
+        xyz="0.000391336404285514 -0.0365766414011693 0.000187700783118083"
+        rpy="0 0 0" />
+      <mass
+        value="0.651042416095026" />
+      <inertia
+        ixx="0.00298936177294947"
+        ixy="-8.42512305234435E-10"
+        ixz="-3.96454233288125E-09"
+        iyy="0.00459449507509991"
+        iyz="8.32696088605818E-10"
+        izz="0.0029893585151179" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/front_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/front_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_left_joint"
+    type="continuous">
+    <origin
+      xyz="0.33182 0.3735 -0.31825"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_left_wheel" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="front_right_wheel">
+    <inertial>
+      <origin
+        xyz="0.000391293455739572 0.0365401507885555 0.000187689861680551"
+        rpy="0 0 0" />
+      <mass
+        value="0.65081338939207" />
+      <inertia
+        ixx="0.00298720054852065"
+        ixy="1.30202836540033E-09"
+        ixz="-3.88990953272823E-09"
+        iyy="0.00459334541330057"
+        iyz="-1.4624186480432E-09"
+        izz="0.00298719733260163" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/front_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/front_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="front_right_joint"
+    type="continuous">
+    <origin
+      xyz="0.33182 -0.3735 -0.31825"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="front_right_wheel" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="rear_left_wheel">
+    <inertial>
+      <origin
+        xyz="4.25361968262594E-05 -0.036576641772875 -0.000431932823001135"
+        rpy="0 0 0" />
+      <mass
+        value="0.651042417400194" />
+      <inertia
+        ixx="0.00298936144419571"
+        ixy="1.10925964504801E-09"
+        ixz="4.06898479805536E-09"
+        iyy="0.00459449507973379"
+        iyz="5.52839651471255E-10"
+        izz="0.00298935890260606" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/rear_left_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/rear_left_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_left_joint"
+    type="continuous">
+    <origin
+      xyz="-0.40525 0.4155 -0.31785"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_left_wheel" />
+    <axis
+      xyz="0 1 0" />
+  </joint>
+  <link
+    name="rear_right_wheel">
+    <inertial>
+      <origin
+        xyz="4.25409504680174E-05 0.0365401567368097 -0.000431889728876034"
+        rpy="0 0 0" />
+      <mass
+        value="0.650813394078346" />
+      <inertia
+        ixx="0.00298720017365453"
+        ixy="-1.58669881900365E-09"
+        ixz="3.98243205522859E-09"
+        iyy="0.00459334541101721"
+        iyz="-1.20465141762546E-10"
+        izz="0.00298719767791102" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/rear_right_wheel.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://Rover Assembly URDF/meshes/rear_right_wheel.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rear_right_joint"
+    type="continuous">
+    <origin
+      xyz="-0.40525 -0.4155 -0.31785"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rear_right_wheel" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+</robot>

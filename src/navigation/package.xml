@@ -71,4 +71,16 @@
   <export>
     <build_type>ament_cmake</build_type>
   </export>
+
+  <entry_points>
+  <console_scripts>
+    <entry_point name="navigation_manager" package="navigation" executable="navigation_manager.py"/>
+    <entry_point name="waypoint_handler" package="navigation" executable="waypoint_handler.py"/>
+    <entry_point name="frontier_explorer" package="navigation" executable="frontier_exploration.py"/>
+    <entry_point name="collision_recovery" package="navigation" executable="collision_recovery.py"/>
+    <entry_point name="autonomous_phase_manager" package="navigation" executable="autonomous_phase_manager.py"/>
+    <entry_point name="start_frame_reference" package="navigation" executable="start_frame_reference.py"/>
+    <entry_point name="object_reporter" package="navigation" executable="object_reporter.py"/>
+  </console_scripts>
+</entry_points>
 </package>
