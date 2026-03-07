@@ -1,0 +1,146 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /TF1
+        - /Map1
+        - /Costmap1
+      Splitter Ratio: 0.5
+    Tree Height: 775
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Expanded:
+      - /2D Goal Pose1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.588679
+  - Class: rviz_common/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Alpha: 0.5
+      Class: rviz_common/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: Map
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /map
+    - Alpha: 0.7
+      Class: rviz_common/Map
+      Color Scheme: costmap
+      Draw Behind: false
+      Enabled: true
+      Name: Global Costmap
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /global_costmap/costmap
+    - Class: rviz_common/TF
+      Enabled: true
+      Name: TF
+      Marker Array Topic: /tf_markers
+      Marker Scale: 1
+      Name: TF
+      Show Arrows: true
+      Show Axes: true
+      Show Names: false
+      Tree:
+        {}
+      Update Interval: 0
+    - Alpha: 1
+      Axes Length: 0.3
+      Axes Radius: 0.03
+      Class: rviz_common/PoseArray
+      Color: 255; 25; 0
+      Enabled: true
+      Head Length: 0.07
+      Head Radius: 0.05
+      Name: Nav2 Poses
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /amcl_pose
+      Shaft Length: 0.23
+      Shaft Radius: 0.02
+    - Class: rviz_common/MarkerArray
+      Enabled: true
+      Name: Frontier Markers
+      Namespaces:
+        frontier_explorer: true
+      Topic:
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /frontier_explorer/frontier_markers
+
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: map
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_common/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_common/MoveCamera
+    - Class: rviz_common/Select
+    - Class: rviz_common/FocusCamera
+    - Class: rviz_common/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_plugins/PublishPoint
+      Single click publishing: true
+      Topic: /clicked_point
+    - Class: rviz_common/SetInitialPose
+      Theta std deviation: 0.26179938779914946
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /initialpose
+      X std deviation: 0.5
+      Y std deviation: 0.5
+    - Class: rviz_common/SetGoal
+      Topic:
+        Depth: 5
+        Durability Policy: Transient Local
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+        Value: /goal_pose
+  Transformation:
+    Current: default
+  Value: true
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 1016
+  Hide Left Dock: false
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd00000004000000000000016a0000035afc0200040fffffff00000144000000f5000000040000000400000008000000080fc00000001000000020000000800000008fc0100000001fb0000000a0049006d006100670065010000013d00000119000000000000000000000000008000000003000000040000000800000008fc00000001000000020000000800000008fc0100000001fb0000000a0049006d006700650101000002660000016f000000000000000000000000000000000100000002000000080000000800000008000000080000000a000000000100000012fc0100000001fb0000001200540069006d0065000000000000045000000138000000000000000000000238000003280000000000000000000000000100000002000000080000000800000008
+  Selection:
+    collapsed: false
+  Tool Properties:
+    collapsed: false
+  Views:
+    collapsed: false
+  Width: 1920
+  X: 0
+  Y: 27

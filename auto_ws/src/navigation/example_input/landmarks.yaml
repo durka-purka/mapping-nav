@@ -1,0 +1,38 @@
+# Example landmarks configuration file
+# From task schematic - provided by judges
+
+landmarks:
+  - id: 0
+    name: "Landmark A - Red Placard"
+    position_x: 1.5
+    position_y: 2.3
+    height_above_ground: 0.8
+    description: "Red placard with text"
+  
+  - id: 1
+    name: "Landmark B - Blue Placard"
+    position_x: -1.2
+    position_y: 3.5
+    height_above_ground: 0.6
+    description: "Blue placard with figure"
+  
+  - id: 2
+    name: "Landmark C - Yellow Placard"
+    position_x: 3.0
+    position_y: -1.5
+    height_above_ground: 0.7
+    description: "Yellow placard"
+  
+  - id: 3
+    name: "Landmark D - Green Placard"
+    position_x: -2.5
+    position_y: -2.0
+    height_above_ground: 0.9
+    description: "Green placard"
+  
+  - id: 4
+    name: "Landmark E - White Placard"
+    position_x: 0.5
+    position_y: -3.0
+    height_above_ground: 0.65
+    description: "White placard"

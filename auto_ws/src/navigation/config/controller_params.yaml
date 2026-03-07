@@ -1,0 +1,71 @@
+# Local Path Controller Configuration
+# Regulated Pure Pursuit for smooth, collision-safe following
+
+controller_server:
+  ros__parameters:
+    use_sim_time: false
+    controller_frequency: 20.0
+    
+    # Min velocity thresholds
+    min_x_velocity_threshold: 0.001
+    min_y_velocity_threshold: 0.5
+    min_theta_velocity_threshold: 0.001
+    
+    # Failure tolerance before recovery
+    failure_tolerance: 0.3
+    
+    # Plugins
+    progress_checker_plugin: "progress_checker"
+    goal_checker_plugins: ["general_goal_checker"]
+    controller_plugins: ["FollowPath"]
+    
+    # Progress checker (detects if stuck)
+    progress_checker:
+      plugin: "nav2_controller::SimpleProgressChecker"
+      required_movement_radius: 0.5    # meters
+      movement_time_allowance: 10.0    # seconds
+    
+    # Goal checker (determines arrival)
+    general_goal_checker:
+      stateful: true
+      plugin: "nav2_controller::SimpleGoalChecker"
+      xy_goal_tolerance: 0.25          # meters
+      yaw_goal_tolerance: 0.25         # radians
+    
+    # Main controller: Regulated Pure Pursuit
+    FollowPath:
+      plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
+      
+      # Velocity constraints
+      desired_linear_vel: 0.35         # m/s - prefer slower for accuracy
+      max_allowed_angular_vel: 1.0     # rad/s
+      
+      # Transform handling
+      transform_tolerance: 0.1
+      
+      # Lookahead distance
+      use_velocity_scaled_lookahead_distance: false
+      min_lookahead_dist: 0.24
+      max_lookahead_dist: 0.4
+      lookahead_time: 1.5
+      
+      # Velocity regulation (reduce speed in obstacles)
+      use_cost_regulated_linear_velocity_scaling: true
+      cost_scaling_dist: 0.6
+      cost_scaling_gain: 1.0
+      regulation_output_enabled: false
+      regulated_linear_scaling_min_radius: 0.9
+      regulated_linear_scaling_mult: 1.3
+      
+      # Curvature lookah ead
+      use_fixed_curvature_lookahead: false
+      curvature_lookahead_dist: 1.0
+      
+      # Heading control
+      use_rotate_to_heading: true
+      rotate_to_heading_min_angle: 0.785    # 45 degrees
+      max_angular_accel: 3.2
+      
+      # Pose search
+      max_robot_pose_search_dist: 2.0
+      use_interpolation: false

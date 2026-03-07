@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>realsense_launch</name>
+  <version>0.1.0</version>
+  <description>
+    RealSense Camera Launch Configuration Package
+    
+    Provides launch files and configurations for Intel RealSense cameras
+    (D435, D435i, etc.) integration with ROS 2.
+  </description>
+  
+  <maintainer email="marlambekovdaulet@gmail.com">Your Team</maintainer>
+  <license>Apache-2.0</license>
+  
+  <author email="marlambekovdaulet@gmail.com">Your Team</author>
+  
+  <!-- Build and runtime dependencies -->
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  
+  <!-- RealSense dependencies -->
+  <depend>realsense2_camera</depend>
+  <depend>realsense2_camera_msgs</depend>
+  <depend>realsense2_description</depend>
+  
+  <!-- Core ROS2 dependencies -->
+  <depend>ros2launch</depend>
+  <depend>sensor_msgs</depend>
+  <depend>geometry_msgs</depend>
+  
+  <!-- Testing -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
