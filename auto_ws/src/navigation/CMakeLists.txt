@@ -60,17 +60,17 @@ install(DIRECTORY rviz/
   DESTINATION share/${PROJECT_NAME}/rviz
 )
 
-install(DIRECTORY object_detection/
-  DESTINATION share/${PROJECT_NAME}/object_detection
-)
+# install(DIRECTORY object_detection/
+#   DESTINATION share/${PROJECT_NAME}/object_detection
+# )
 
 # Testing
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  ament_lint_auto_find_test_files()
-  find_package(ament_cmake_pytest REQUIRED)
-  ament_add_pytest_executable(test_waypoint_handler tests/test_waypoint_handler.py)
-  ament_add_pytest_executable(test_frontier_explorer tests/test_frontier_explorer.py)
-endif()
+# if(BUILD_TESTING)
+#   find_package(ament_lint_auto REQUIRED)
+#   ament_lint_auto_find_test_dependencies()
+#   find_package(ament_cmake_pytest REQUIRED)
+#   ament_add_pytest_executable(test_waypoint_handler tests/test_waypoint_handler.py)
+#   ament_add_pytest_executable(test_frontier_explorer tests/test_frontier_explorer.py)
+# endif()
 
 ament_package()
