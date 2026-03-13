@@ -50,69 +50,69 @@ def generate_launch_description():
     ])
 
     # ── 4. RTAB-Map (wait 8s, starts mapping from simulated depth camera) ──
-    rtabmap = TimerAction(period=8.0, actions=[
-        Node(
-            package='rtabmap_ros', executable='rtabmap',
-            name='rtabmap',
-            output='screen',
-            parameters=[{
-                'use_sim_time': True,
-                'subscribe_depth': True,
-                'subscribe_rgb': True,
-                'frame_id': 'base_link',
-                'odom_frame_id': 'odom',
-                'approx_sync': True,
-                'Mem/IncrementalMemory': 'true',
-                'Mem/InitWMWithAllNodes': 'false',
-                'RGBD/NeighborLinkRefining': 'true',
-                'Reg/Strategy': '1',       # ICP
-                'Vis/MinInliers': '10',    # lower = easier to track in sim
-            }],
-            remappings=[
-                ('rgb/image',        '/camera/color/image_raw'),
-                ('depth/image',      '/camera/aligned_depth_to_color/image_raw'),
-                ('rgb/camera_info',  '/camera/color/camera_info'),
-                ('odom',             '/rtabmap/odom'),
-            ]
-        )
-    ])
+    # rtabmap = TimerAction(period=8.0, actions=[
+    #     Node(
+    #         package='rtabmap_ros', executable='rtabmap',
+    #         name='rtabmap',
+    #         output='screen',
+    #         parameters=[{
+    #             'use_sim_time': True,
+    #             'subscribe_depth': True,
+    #             'subscribe_rgb': True,
+    #             'frame_id': 'base_link',
+    #             'odom_frame_id': 'odom',
+    #             'approx_sync': True,
+    #             'Mem/IncrementalMemory': 'true',
+    #             'Mem/InitWMWithAllNodes': 'false',
+    #             'RGBD/NeighborLinkRefining': 'true',
+    #             'Reg/Strategy': '1',       # ICP
+    #             'Vis/MinInliers': '10',    # lower = easier to track in sim
+    #         }],
+    #         remappings=[
+    #             ('rgb/image',        '/camera/color/image_raw'),
+    #             ('depth/image',      '/camera/aligned_depth_to_color/image_raw'),
+    #             ('rgb/camera_info',  '/camera/color/camera_info'),
+    #             ('odom',             '/rtabmap/odom'),
+    #         ]
+    #     )
+    # ])
 
     # ── 5. EKF (fuses rtabmap odom + simulated IMU) ──
-    ekf = TimerAction(period=8.0, actions=[
-        Node(
-            package='robot_localization', executable='ekf_node',
-            name='ekf_filter_node',
-            parameters=[os.path.join(nav_pkg, 'config', 'ekf_sim.yaml')],
-            output='screen'
-        )
-    ])
+    # ekf = TimerAction(period=8.0, actions=[
+    #     Node(
+    #         package='robot_localization', executable='ekf_node',
+    #         name='ekf_filter_node',
+    #         parameters=[os.path.join(nav_pkg, 'config', 'ekf_sim.yaml')],
+    #         output='screen'
+    #     )
+    # ])
 
     # ── 6. Nav2 (wait 15s — needs map to exist first) ──
-    nav2 = TimerAction(period=15.0, actions=[
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource([
-                PathJoinSubstitution([
-                    FindPackageShare('nav2_bringup'), 'launch', 'navigation_launch.py'
-                ])
-            ]),
-            launch_arguments={
-                'use_sim_time': 'true',
-                'params_file': os.path.join(nav_pkg, 'config', 'nav2_params.yaml'),
-            }.items()
-        )
-    ])
+    # nav2 = TimerAction(period=15.0, actions=[
+    #     IncludeLaunchDescription(
+    #         PythonLaunchDescriptionSource([
+    #             PathJoinSubstitution([
+    #                 FindPackageShare('nav2_bringup'), 'launch', 'navigation_launch.py'
+    #             ])
+    #         ]),
+    #         launch_arguments={
+    #             'use_sim_time': 'true',
+    #             'params_file': os.path.join(nav_pkg, 'config', 'nav2_params.yaml'),
+    #         }.items()
+    #     )
+    # ])
 
     # ── 7. RViz ──
-    rviz = TimerAction(period=10.0, actions=[
-        Node(
-            package='rviz2', executable='rviz2',
-            arguments=['-d', os.path.join(nav_pkg, 'rviz', 'navigation.rviz')],
-            parameters=[{'use_sim_time': True}]
-        )
-    ])
+    # rviz = TimerAction(period=10.0, actions=[
+    #     Node(
+    #         package='rviz2', executable='rviz2',
+    #         arguments=['-d', os.path.join(nav_pkg, 'rviz', 'navigation.rviz')],
+    #         parameters=[{'use_sim_time': True}]
+    #     )
+    # ])
 
     return LaunchDescription([
         gazebo, rsp, spawn,
-        rtabmap, ekf,
-        nav2, rviz
+        # rtabmap, ekf,
+        # nav2, rviz
     ])

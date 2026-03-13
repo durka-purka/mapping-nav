@@ -3,7 +3,8 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="Rover Assembly URDF">
+  name="rover_assembly_urdf">
+  <plugin filename="gz-sim-sensors-system" name="sensors_system"></plugin>
   <link
     name="base_link">
     <inertial>
@@ -26,7 +27,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/base_link.STL" />
+          filename="package://rover_assembly_urdf/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -40,7 +41,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/base_link.STL" />
+          filename="package://rover_assembly_urdf/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +67,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/front_left_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/front_left_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +81,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/front_left_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/front_left_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -119,7 +120,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/front_right_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/front_right_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -133,7 +134,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/front_right_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/front_right_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -172,7 +173,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/rear_left_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/rear_left_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -186,7 +187,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/rear_left_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/rear_left_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -225,7 +226,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/rear_right_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/rear_right_wheel.STL" />
       </geometry>
       <material
         name="">
@@ -239,7 +240,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Rover Assembly URDF/meshes/rear_right_wheel.STL" />
+          filename="package://rover_assembly_urdf/meshes/rear_right_wheel.STL" />
       </geometry>
     </collision>
   </link>
@@ -276,10 +277,7 @@
   </joint>
   <!-- Gazebo Differential Drive Plugin (replaces motor driver) -->
   <gazebo>
-    <plugin name="diff_drive" filename="libgazebo_ros_diff_drive.so">
-      <ros>
-        <namespace>/</namespace>
-      </ros>
+    <plugin name="diff_drive" filename="gz-sim-diff-drive-system">
       <left_joint>front_left_joint</left_joint>
       <right_joint>front_right_joint</right_joint>
       <wheel_separation>0.831</wheel_separation>
@@ -298,7 +296,7 @@
     <sensor name="imu_sensor" type="imu">
       <always_on>true</always_on>
       <update_rate>100</update_rate>
-      <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+      <plugin filename="gz-sim-ros-imu-system" name="imu_plugin">
         <ros>
           <remapping>~/out:=/imu/data_raw</remapping>
         </ros>
@@ -322,7 +320,7 @@
           <far>10.0</far>
         </clip>
       </camera>
-      <plugin name="camera_plugin" filename="libgazebo_ros_camera.so">
+      <plugin name="camera_plugin" filename="gz-sim-ros-camera-system">
         <ros>
           <remapping>~/image_raw:=/camera/color/image_raw</remapping>
           <remapping>~/depth/image_raw:=/camera/aligned_depth_to_color/image_raw</remapping>
